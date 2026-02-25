@@ -167,6 +167,33 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    // GitHub 自动同步
+    const { exec } = require('child_process');
+    
+    function syncToGitHub(message = 'Update') {
+        console.log('🔄 正在同步到 GitHub...');
+        exec('git add . && git commit -m "' + message + '" && git push origin master gh-pages', 
+            { cwd: __dirname },
+            (error, stdout, stderr) => {
+                if (error) {
+                    console.error('❌ GitHub 同步失败:', stderr);
+                } else {
+                    console.log('✅ 已同步到 GitHub!');
+                }
+            });
+    }
+
+    // 保存任务后同步
+    function saveTasksAndSync(tasks, res) {
+        fs.writeFileSync(DATA_FILE, JSON.stringify(tasks, null, 2), 'utf8');
+        res.writeHead(200, { 
+            'Content-Type': 'application/json; charset=utf-8',
+            'Access-Control-Allow-Origin': '*'
+        });
+        res.end(JSON.stringify({ success: true }));
+        syncToGitHub('Update tasks');
+    }
+
     // API: 保存任务
     if (req.method === 'POST' && req.url === '/api/tasks') {
         let body = '';
@@ -174,12 +201,7 @@ const server = http.createServer((req, res) => {
         req.on('end', () => {
             try {
                 const tasks = JSON.parse(body);
-                fs.writeFileSync(DATA_FILE, JSON.stringify(tasks, null, 2), 'utf8');
-                res.writeHead(200, { 
-                    'Content-Type': 'application/json; charset=utf-8',
-                    'Access-Control-Allow-Origin': '*'
-                });
-                res.end(JSON.stringify({ success: true }));
+                saveTasksAndSync(tasks, res);
             } catch (e) {
                 res.writeHead(500, { 
                     'Content-Type': 'application/json; charset=utf-8',
