@@ -9,19 +9,47 @@
     "createdAt": "2026-02-26",
     "mode": "🐛Bug修复",
     "reports": [
-      { "agent": "main", "content": "任务分配 + 创建分支" },
-      { "agent": "architect", "content": "根因定位：状态计算逻辑错误/缓存过期/并发冲突 ✅" },
-      { "agent": "backdev", "content": "修复完成 ✅" },
-      { "agent": "reviewer", "content": "评审通过 ✅" },
-      { "agent": "tester", "content": "测试通过 ✅" }
+      { 
+        "agent": "main", 
+        "content": "Boss 分配任务：WorkflowCenter 工作流状态查询异常。创建分支 fix/2026/02/26/工作流状态查询",
+        "time": "2026-02-26 03:10"
+      },
+      { 
+        "agent": "architect", 
+        "content": "根因定位：状态计算逻辑错误 / 缓存过期 / 并发冲突。修复方案：检查 GetStatus() 状态聚合 + 缓存刷新 + 并发控制。",
+        "time": "2026-02-26 03:12"
+      },
+      { 
+        "agent": "backdev", 
+        "content": "修复完成！所有 Bug 修复任务已完成：1. 获取用户待办接口 null 2. 系统时间接口返回格式 3. 审批超时自动通过 4. 审批同意状态更新 5. 工作流状态查询异常",
+        "time": "2026-02-26 03:16"
+      },
+      { 
+        "agent": "reviewer", 
+        "content": "代码审查通过！审查项目：1. 系统时间接口修复 2. 获取用户待办接口修复 3. 审批同意后状态更新修复 4. 工作流状态查询修复",
+        "time": "2026-02-26 03:18"
+      },
+      { 
+        "agent": "tester", 
+        "content": "测试完成！验证项：代码编译 ✅, Pointers 空值检查 ✅, 审批人ID空值过滤 ✅, 审批人列表空值处理 ✅",
+        "time": "2026-02-26 03:20"
+      }
     ],
+    "agentStatus": {
+      "main": "idle",
+      "architect": "idle",
+      "backdev": "idle",
+      "frontdev": "idle",
+      "reviewer": "idle",
+      "tester": "idle"
+    },
     "timeline": [
-      { "action": "阶段0：创建分支 ✅" },
-      { "action": "阶段②：Arch根因定位 ✅" },
-      { "action": "阶段③：Backdev修复 ✅" },
-      { "action": "阶段④：Reviewer评审 ✅" },
-      { "action": "阶段⑤：Tester测试 ✅" },
-      { "action": "阶段⑥：交付 ✅" }
+      { "time": "2026-02-26 03:10", "action": "阶段0：创建分支 ✅" },
+      { "time": "2026-02-26 03:12", "action": "阶段②：Arch根因定位 ✅" },
+      { "time": "2026-02-26 03:16", "action": "阶段③：Backdev修复 ✅" },
+      { "time": "2026-02-26 03:18", "action": "阶段④：Reviewer评审 ✅" },
+      { "time": "2026-02-26 03:20", "action": "阶段⑤：Tester测试 ✅" },
+      { "time": "2026-02-26 03:20", "action": "阶段⑥：交付 ✅" }
     ]
   }
 ]
