@@ -735,7 +735,7 @@
         }
         
         function loadTasks() {
-            fetch(API_BASE + '/tasks')
+            fetch('data/tasks.json')
                 .then(res => res.json())
                 .then(data => {
                     tasks = data;
