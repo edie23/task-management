@@ -606,14 +606,15 @@
             { id: 'tester', name: 'Tester', role: '测试', status: 'idle' }
         ];
         
-        // 看板列定义
+        // 看板列定义 - 按开发模式
         const COLUMNS = [
-            { id: 'todo', title: '⏳ 待处理', status: ['pending'] },
-            { id: 'analysis', title: '📋 需求分析', status: ['analysis'] },
-            { id: 'dev', title: '🏗️ 开发中', status: ['dev', 'development'] },
-            { id: 'review', title: '🔍 评审中', status: ['review', 'reviewing'] },
-            { id: 'test', title: '🧪 测试中', status: ['test', 'testing'] },
-            { id: 'done', title: '✅ 已完成', status: ['done', 'completed'] }
+            { id: 'new-feature', title: '🚀 新功能', mode: '新功能' },
+            { id: 'bug-fix', title: '🐛 Bug修复', mode: 'Bug修复' },
+            { id: 'hotfix', title: '🔥 紧急热修', mode: '紧急热修' },
+            { id: 'refactor', title: '♻️ 重构优化', mode: '重构优化' },
+            { id: 'migration', title: '🗄️ 数据迁移', mode: '数据迁移' },
+            { id: 'research', title: '🔬 需求调研', mode: '需求调研' },
+            { id: 'other', title: '📌 其他', mode: '其他' }
         ];
         
         let tasks = [];
@@ -686,8 +687,8 @@
         function renderBoard() {
             const html = COLUMNS.map(col => {
                 const colTasks = tasks.filter(t => {
-                    const s = (t.status || 'pending').toLowerCase();
-                    return col.status.some(st => s === st);
+                    const mode = (t.mode || t开发模式 || '其他');
+                    return mode === col.mode;
                 });
                 
                 const cards = colTasks.map(task => `
@@ -695,7 +696,7 @@
                         <div class="task-title">${task.name}</div>
                         <div class="task-meta">
                             <span class="task-project">${task.project || '-'}</span>
-                            <span>${task.reports ? task.reports.length : 0} 条记录</span>
+                            <span>${task.status === 'done' ? '✅' : '🔄'}</span>
                         </div>
                     </div>
                 `).join('');

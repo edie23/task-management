@@ -2,6 +2,7 @@
   {
     "id": "1",
     "name": "PermissionCenter 数据库备注",
+    "mode": "新功能",
     "status": "done",
     "branch": "feature/2026/02/24/添加数据库备注",
     "project": "UFX.SCM.Cloud.PermissionCenter",
@@ -37,6 +38,7 @@
   {
     "id": "2",
     "name": "TenantCenter 数据库备注",
+    "mode": "新功能",
     "status": "done",
     "branch": "feature/2026/02/24/添加数据库备注",
     "project": "UFX.SCM.Cloud.TenantCenter",
@@ -72,6 +74,7 @@
   {
     "id": "3",
     "name": "AM 数据库备注",
+    "mode": "新功能",
     "status": "done",
     "branch": "feature/2026/02/24/添加数据库备注",
     "project": "UFX.SCM.Cloud.AM",
@@ -103,6 +106,7 @@
   {
     "id": "4",
     "name": "MiddlegroundFoundationCenter 数据库备注",
+    "mode": "新功能",
     "status": "done",
     "branch": "feature/2026/02/24/添加数据库备注",
     "project": "UFX.SCM.Cloud.MiddlegroundFoundationCenter",
@@ -134,6 +138,7 @@
   {
     "id": "5",
     "name": "开发任务管理系统",
+    "mode": "新功能",
     "status": "done",
     "branch": "feature/2026/02/24/开发任务管理系统",
     "project": "task-management",
@@ -183,6 +188,7 @@
   {
     "id": "6",
     "name": "用户禁用自动转办审批任务",
+    "mode": "新功能",
     "status": "done",
     "branch": "feature/2026/02/25/auto-transfer-approval",
     "project": "UFX.SCM.Cloud.WorkflowCenter",
@@ -250,6 +256,7 @@
   {
     "id": "7",
     "name": "钉钉/飞书/企业微信卡片消息SDK",
+    "mode": "新功能",
     "status": "done",
     "branch": "feature/2026/03/10/卡片消息SDK",
     "project": "UFX.Cloud",
@@ -294,6 +301,7 @@
   {
     "id": "8",
     "name": "Bug修复：DapperSqlExecuter NullReferenceException",
+    "mode": "Bug修复",
     "status": "done",
     "branch": "fix/2026/03/10/DapperSqlExecuter",
     "project": "UFX.SCM.Cloud.InfrastructureCenter",
@@ -329,6 +337,7 @@
   {
     "id": "9",
     "name": "OpenClaw 跨平台一键安装向导",
+    "mode": "需求调研",
     "status": "pending",
     "branch": "",
     "project": "openclaw",
