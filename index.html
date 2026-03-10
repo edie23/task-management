@@ -681,7 +681,7 @@
         
         // 加载任务 - 使用 raw URL 避免跨域
         function loadTasks() {
-            fetch(`https://gist.githubusercontent.com/edie23/${GIST_ID}/raw`)
+            fetch(`https://gist.githubusercontent.com/edie23/${GIST_ID}/raw/tasks.json`)
                 .then(res => res.json())
                 .then(data => {
                     tasks = data;
