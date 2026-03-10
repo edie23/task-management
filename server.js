@@ -6,6 +6,18 @@ const path = require('path');
 const PORT = 8086;
 const DATA_FILE = path.join(__dirname, 'data', 'tasks.json');
 
+// 加载 .env 文件
+const envFile = path.join(__dirname, '.env');
+if (fs.existsSync(envFile)) {
+    const envContent = fs.readFileSync(envFile, 'utf8');
+    envContent.split('\n').forEach(line => {
+        const [key, value] = line.split('=');
+        if (key && value) {
+            process.env[key.trim()] = value.trim();
+        }
+    });
+}
+
 // GitHub Gist 配置
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '';
 const GIST_ID = null; // 首次运行会创建新 Gist，后续填写
