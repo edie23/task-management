@@ -1,55 +1,345 @@
 [
   {
-    "id": "16",
-    "name": "【🐛Bug修复】测试-审批节点查找",
+    "id": "1",
+    "name": "PermissionCenter 数据库备注",
     "status": "done",
-    "branch": "fix/2026/02/26/审批节点查找",
-    "project": "UFX.SCM.Cloud.WorkflowCenter",
-    "description": "测试Bug修复模式 - 审批节点查找失败",
-    "createdAt": "2026-02-26",
-    "mode": "🐛Bug修复",
+    "branch": "feature/2026/02/24/添加数据库备注",
+    "project": "UFX.SCM.Cloud.PermissionCenter",
+    "description": "给没有备注的字段添加数据库备注",
+    "createdAt": "2026-02-24",
     "reports": [
-      { 
-        "agent": "main", 
-        "content": "Boss 分配任务：WorkflowCenter 审批节点查找失败。\n\n分支：fix/2026/02/26/审批节点查找\n\n调度 architect 进行根因定位。",
-        "time": "2026-02-26 09:43"
+      {
+        "agent": "main",
+        "time": "2026-02-24",
+        "content": "Boss 分配任务：给 PermissionCenter 项目添加数据库备注。"
       },
-      { 
-        "agent": "architect", 
-        "content": "Bug 修复方案已输出 ✅\n\n---\n## 🐛 Bug修复 - 审批节点查找失败\n\n### 根因\nID 匹配错误 / 查询条件错误 / Include 未配置\n\n### 修复方案\n检查 FindPointerById 查询逻辑\n\n### 分支\nfix/2026/02/26/审批节点查找\n\n### 状态\n- 群消息 ✅ 已发送\n- 任务记录 ✅ 已记录（ARCH-007）\n\n### 下一步\n由 backdev 实施修复",
-        "time": "2026-02-26 09:45"
-      },
-      { 
-        "agent": "backdev", 
-        "content": "## 审批节点查找修复 - 任务进度\n\n| 阶段 | 状态 | 说明 |\n|------|------|------|\n| 问题定位 | ✅ | 定位到 `Transfer` 方法中 `_pointers.FirstOrDefault` 可能返回 null |\n| 代码修复 | ✅ | 添加 Approvers 空值检查 + First→FirstOrDefault |\n| 异常处理 | ✅ | 添加详细错误信息 |\n\n### 修改内容\n\n**文件**: `ApprovalWorkflow.cs`\n\n```csharp\n// 新增空值检查\nif (pointer.Approvers == null || !pointer.Approvers.Any())\n{\n    throw new BusinessException(...)\n}\n\n// First → FirstOrDefault + 找不到时抛异常\nvar approval = pointer.Approvers.FirstOrDefault(...);\nif (approval == null)\n{\n    throw new BusinessException(...);\n}\n```\n\n### 状态\n\n**✅ 已完成，等待测试验证**",
-        "time": "2026-02-26 09:50"
-      },
-      { 
-        "agent": "reviewer", 
-        "content": "已完成代码审查！\n\n## 🔍 审查结果\n\n| 检查项 | 状态 |\n|--------|------|\n| Approvers 空值检查 | ✅ 正确（578-580行） |\n| FirstOrDefault 使用 | ✅ 正确（584-587行） |\n| 异常信息 | ✅ 明确 |\n\n**审查结论**：✅ **通过**\n\n---\n\n已输出到群里并记录到任务系统。",
-        "time": "2026-02-26 09:52"
-      },
-      { 
-        "agent": "tester", 
-        "content": "Boss，测试完成！✅\n\n## 🐛 Bug修复测试 - 审批节点查找\n\n| 测试项 | 状态 |\n|--------|------|\n| 代码编译 | ✅ 通过 (0 错误) |\n| Approvers 空值检查 | ✅ 正确 |\n| 审批人查找异常处理 | ✅ 正确 |\n\n**结论**：✅ 测试通过！有效防止了空引用并提供明确错误信息。\n\n报告已同步至公共群。🧪",
-        "time": "2026-02-26 09:55"
+      {
+        "agent": "backdev",
+        "time": "2026-02-24",
+        "content": "完成！给 PermissionCenter 项目添加了数据库备注。共修改了 17 个文件，添加了 34 处 HasComment。编译通过，0 错误，421 警告。分支：feature/2026/02/24/添加数据库备注"
       }
     ],
-    "agentStatus": {
-      "main": "idle",
-      "architect": "idle",
-      "backdev": "idle",
-      "frontdev": "idle",
-      "reviewer": "idle",
-      "tester": "idle"
-    },
     "timeline": [
-      { "time": "2026-02-26 09:43", "action": "阶段0：创建分支 ✅" },
-      { "time": "2026-02-26 09:45", "action": "阶段②：Arch根因定位 ✅" },
-      { "time": "2026-02-26 09:50", "action": "阶段③：Backdev修复 ✅" },
-      { "time": "2026-02-26 09:52", "action": "阶段④：Reviewer评审 ✅" },
-      { "time": "2026-02-26 09:55", "action": "阶段⑤：Tester测试 ✅" },
-      { "time": "2026-02-26 09:55", "action": "阶段⑥：交付 ✅" }
+      {
+        "time": "2026-02-24",
+        "action": "任务创建"
+      },
+      {
+        "time": "2026-02-24",
+        "action": "backdev 开发完成"
+      },
+      {
+        "time": "2026-02-24",
+        "action": "编译通过 0错误"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "name": "TenantCenter 数据库备注",
+    "status": "done",
+    "branch": "feature/2026/02/24/添加数据库备注",
+    "project": "UFX.SCM.Cloud.TenantCenter",
+    "description": "给没有备注的字段添加数据库备注",
+    "createdAt": "2026-02-24",
+    "reports": [
+      {
+        "agent": "main",
+        "time": "2026-02-24",
+        "content": "Boss 分配任务：给 TenantCenter 项目添加数据库备注。"
+      },
+      {
+        "agent": "backdev",
+        "time": "2026-02-24",
+        "content": "TenantCenter 项目已完成数据库备注添加。修改了 TenantCenterDBContext.cs 文件。编译通过，0 错误。"
+      }
+    ],
+    "timeline": [
+      {
+        "time": "2026-02-24",
+        "action": "任务创建"
+      },
+      {
+        "time": "2026-02-24",
+        "action": "backdev 开发完成"
+      },
+      {
+        "time": "2026-02-24",
+        "action": "编译通过 0错误"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "name": "AM 数据库备注",
+    "status": "done",
+    "branch": "feature/2026/02/24/添加数据库备注",
+    "project": "UFX.SCM.Cloud.AM",
+    "description": "审查发现已完整，无需修改",
+    "createdAt": "2026-02-24",
+    "reports": [
+      {
+        "agent": "main",
+        "time": "2026-02-24",
+        "content": "Boss 分配任务：给 AM 项目添加数据库备注。"
+      },
+      {
+        "agent": "backdev",
+        "time": "2026-02-24",
+        "content": "审查完成！检查了 AM 项目的 10 个配置文件，所有字段已有完整备注（71处 HasComment），无需修改。"
+      }
+    ],
+    "timeline": [
+      {
+        "time": "2026-02-24",
+        "action": "任务创建"
+      },
+      {
+        "time": "2026-02-24",
+        "action": "backdev 审查完成"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "name": "MiddlegroundFoundationCenter 数据库备注",
+    "status": "done",
+    "branch": "feature/2026/02/24/添加数据库备注",
+    "project": "UFX.SCM.Cloud.MiddlegroundFoundationCenter",
+    "description": "OpenCode 处理失败，无修改",
+    "createdAt": "2026-02-24",
+    "reports": [
+      {
+        "agent": "main",
+        "time": "2026-02-24",
+        "content": "Boss 分配任务：给 MiddlegroundFoundationCenter 项目添加数据库备注。"
+      },
+      {
+        "agent": "backdev",
+        "time": "2026-02-24",
+        "content": "OpenCode 执行超时，没有生成修改。任务状态：失败。"
+      }
+    ],
+    "timeline": [
+      {
+        "time": "2026-02-24",
+        "action": "任务创建"
+      },
+      {
+        "time": "2026-02-24",
+        "action": "OpenCode 超时失败"
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "name": "开发任务管理系统",
+    "status": "done",
+    "branch": "feature/2026/02/24/开发任务管理系统",
+    "project": "task-management",
+    "description": "看板视图、任务详情、时间线，支持记录所有 Agent 汇报内容",
+    "createdAt": "2026-02-24",
+    "reports": [
+      {
+        "agent": "main",
+        "time": "2026-02-24",
+        "content": "Boss 分配任务：开发任务管理系统，记录所有开发任务，有看板视图，点击可查看详情。"
+      },
+      {
+        "agent": "productmanager",
+        "time": "2026-02-24",
+        "content": "需求文档已完成！包含：7种状态流转、看板视图+拖拽、任务详情页+时间线、预估开发周期：8天。输出：task-management-requirements.md"
+      },
+      {
+        "agent": "architect",
+        "time": "2026-02-24",
+        "content": "架构设计已完成！方案：前后端分离SPA，技术栈 React + TypeScript + Node.js + MySQL，核心模块5个，周期8天。输出：task-management-architecture.md"
+      },
+      {
+        "agent": "backdev",
+        "time": "2026-02-24",
+        "content": "手动开发完成！创建了 index.html，包含看板视图、任务详情弹窗、时间线记录、数据存储在 localStorage。"
+      }
+    ],
+    "timeline": [
+      {
+        "time": "2026-02-24",
+        "action": "任务创建"
+      },
+      {
+        "time": "2026-02-24",
+        "action": "productmanager 需求分析"
+      },
+      {
+        "time": "2026-02-24",
+        "action": "architect 架构设计"
+      },
+      {
+        "time": "2026-02-24",
+        "action": "backdev 开发完成"
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "name": "用户禁用自动转办审批任务",
+    "status": "done",
+    "branch": "feature/2026/02/25/auto-transfer-approval",
+    "project": "UFX.SCM.Cloud.WorkflowCenter",
+    "description": "当用户被禁用时，自动将其审批任务转办给上级；无上级则转办给租户主账号",
+    "createdAt": "2026-02-25",
+    "reports": [
+      {
+        "agent": "main",
+        "time": "2026-02-25",
+        "content": "Boss 分配任务：给 WorkflowCenter 项目增加用户禁用时自动转办审批任务功能。"
+      },
+      {
+        "agent": "productmanager",
+        "time": "2026-02-25",
+        "content": "需求文档已完成！"
+      },
+      {
+        "agent": "architect",
+        "time": "2026-02-25",
+        "content": "架构设计已完成！"
+      },
+      {
+        "agent": "backdev",
+        "time": "2026-02-25",
+        "content": "功能开发完成！新增 UserDisabledEvent、UserDisabledEventHandler、UserDisabledTaskTransferService、UserDisabledTaskTransfer 实体。修复审查问题：拼写错误Respositiy、添加幂等性检查、使用IClock。"
+      },
+      {
+        "agent": "reviewer",
+        "time": "2026-02-25",
+        "content": "代码审查完成，修复问题后通过。"
+      },
+      {
+        "agent": "tester",
+        "time": "2026-02-25",
+        "content": "测试项目配置已修复，添加测试用例。"
+      }
+    ],
+    "timeline": [
+      {
+        "time": "2026-02-25",
+        "action": "任务创建"
+      },
+      {
+        "time": "2026-02-25",
+        "action": "productmanager 需求分析"
+      },
+      {
+        "time": "2026-02-25",
+        "action": "architect 架构设计"
+      },
+      {
+        "time": "2026-02-25",
+        "action": "backdev 开发完成"
+      },
+      {
+        "time": "2026-02-25",
+        "action": "reviewer 代码审查通过"
+      },
+      {
+        "time": "2026-02-25",
+        "action": "tester 测试完成"
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "name": "钉钉/飞书/企业微信卡片消息SDK",
+    "status": "done",
+    "branch": "feature/2026/03/10/卡片消息SDK",
+    "project": "UFX.Cloud",
+    "description": "在 UFX.Cloud 项目中添加钉钉和飞书的卡片消息接口",
+    "createdAt": "2026-03-10",
+    "reports": [
+      {
+        "agent": "main",
+        "time": "2026-03-10",
+        "content": "Boss 分配任务：调研并实现钉钉、飞书、企业微信的卡片消息SDK。"
+      },
+      {
+        "agent": "main",
+        "time": "2026-03-10",
+        "content": "调研完成：钉钉已有普通消息，卡片需新增；飞书已有普通消息，卡片需新增；企业微信已有卡片消息。"
+      },
+      {
+        "agent": "main",
+        "time": "2026-03-10",
+        "content": "实现完成！新增文件：DingTalkCardMessageModels.cs（Link、ActionCard）、InteractiveMessageModel.cs（飞书卡片）。编译通过。"
+      }
+    ],
+    "timeline": [
+      {
+        "time": "2026-03-10",
+        "action": "任务创建"
+      },
+      {
+        "time": "2026-03-10",
+        "action": "需求调研"
+      },
+      {
+        "time": "2026-03-10",
+        "action": "SDK 开发完成"
+      },
+      {
+        "time": "2026-03-10",
+        "action": "编译通过"
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "name": "Bug修复：DapperSqlExecuter NullReferenceException",
+    "status": "done",
+    "branch": "fix/2026/03/10/DapperSqlExecuter",
+    "project": "UFX.SCM.Cloud.InfrastructureCenter",
+    "description": "修复 GlobalSearchAppService 调用 DapperSqlExecuter 时 result.Data 为空导致的 NullReferenceException",
+    "createdAt": "2026-03-10",
+    "reports": [
+      {
+        "agent": "main",
+        "time": "2026-03-10",
+        "content": "Boss 分配任务：根据堆栈信息修复 Bug。"
+      },
+      {
+        "agent": "main",
+        "time": "2026-03-10",
+        "content": "修复完成！问题：API 返回的 result.Data 为 null 时访问 DefaultConnectionString 抛异常。修复：添加 null 检查。修改文件：DapperSqlExecuter.cs"
+      }
+    ],
+    "timeline": [
+      {
+        "time": "2026-03-10",
+        "action": "任务创建"
+      },
+      {
+        "time": "2026-03-10",
+        "action": "Bug 修复完成"
+      },
+      {
+        "time": "2026-03-10",
+        "action": "编译通过"
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "name": "OpenClaw 跨平台一键安装向导",
+    "status": "pending",
+    "branch": "",
+    "project": "openclaw",
+    "description": "开发一个傻瓜式的安装向导程序，支持 Windows、Linux、Mac 一键安装 OpenClaw",
+    "createdAt": "2026-03-05",
+    "reports": [],
+    "timeline": [
+      {
+        "time": "2026-03-05",
+        "action": "任务创建"
+      }
     ]
   }
 ]

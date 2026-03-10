@@ -734,14 +734,30 @@
             document.getElementById('modal').classList.add('active');
         }
         
+        // Gist 配置
+        const GIST_ID = '96e9f660411102536b60b781b392f01d';
+        
         function loadTasks() {
-            fetch('data/tasks.json')
+            // 优先从 GitHub Gist 获取数据
+            fetch(`https://api.github.com/gists/${GIST_ID}`)
                 .then(res => res.json())
-                .then(data => {
-                    tasks = data;
+                .then(gist => {
+                    const content = gist.files['tasks.json'].content;
+                    tasks = JSON.parse(content);
                     renderBoard();
                     renderAgents();
                     updateStats();
+                })
+                .catch(err => {
+                    // 降级到本地文件
+                    fetch('data/tasks.json')
+                        .then(res => res.json())
+                        .then(data => {
+                            tasks = data;
+                            renderBoard();
+                            renderAgents();
+                            updateStats();
+                        });
                 });
         }
         

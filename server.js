@@ -1,140 +1,176 @@
 const http = require('http');
+const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
 const PORT = 8086;
 const DATA_FILE = path.join(__dirname, 'data', 'tasks.json');
 
+// GitHub Gist 配置
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '';
+const GIST_ID = null; // 首次运行会创建新 Gist，后续填写
+
 // 确保 data 目录存在
-const dataDir = path.dirname(DATA_FILE);
+const dataDir = path.join(__dirname, 'data');
 if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
 }
 
-// 初始化数据文件
-if (!fs.existsSync(DATA_FILE)) {
-    const initialData = [
-        {
-            id: '1',
-            name: 'PermissionCenter 数据库备注',
-            status: 'done',
-            branch: 'feature/2026/02/24/添加数据库备注',
-            project: 'UFX.SCM.Cloud.PermissionCenter',
-            description: '给没有备注的字段添加数据库备注',
-            createdAt: '2026-02-24',
-            reports: [
-                { agent: 'main', time: '2026-02-24', content: 'Boss 分配任务：给 PermissionCenter 项目添加数据库备注。' },
-                { agent: 'backdev', time: '2026-02-24', content: '完成！给 PermissionCenter 项目添加了数据库备注。共修改了 17 个文件，添加了 34 处 HasComment。编译通过，0 错误，421 警告。分支：feature/2026/02/24/添加数据库备注' }
-            ],
-            timeline: [
-                { time: '2026-02-24', action: '任务创建' },
-                { time: '2026-02-24', action: 'backdev 开发完成' },
-                { time: '2026-02-24', action: '编译通过 0错误' }
-            ]
-        },
-        {
-            id: '2',
-            name: 'TenantCenter 数据库备注',
-            status: 'done',
-            branch: 'feature/2026/02/24/添加数据库备注',
-            project: 'UFX.SCM.Cloud.TenantCenter',
-            description: '给没有备注的字段添加数据库备注',
-            createdAt: '2026-02-24',
-            reports: [
-                { agent: 'main', time: '2026-02-24', content: 'Boss 分配任务：给 TenantCenter 项目添加数据库备注。' },
-                { agent: 'backdev', time: '2026-02-24', content: 'TenantCenter 项目已完成数据库备注添加。修改了 TenantCenterDBContext.cs 文件。编译通过，0 错误。' }
-            ],
-            timeline: [
-                { time: '2026-02-24', action: '任务创建' },
-                { time: '2026-02-24', action: 'backdev 开发完成' },
-                { time: '2026-02-24', action: '编译通过 0错误' }
-            ]
-        },
-        {
-            id: '3',
-            name: 'AM 数据库备注',
-            status: 'done',
-            branch: 'feature/2026/02/24/添加数据库备注',
-            project: 'UFX.SCM.Cloud.AM',
-            description: '审查发现已完整，无需修改',
-            createdAt: '2026-02-24',
-            reports: [
-                { agent: 'main', time: '2026-02-24', content: 'Boss 分配任务：给 AM 项目添加数据库备注。' },
-                { agent: 'backdev', time: '2026-02-24', content: '审查完成！检查了 AM 项目的 10 个配置文件，所有字段已有完整备注（71处 HasComment），无需修改。' }
-            ],
-            timeline: [
-                { time: '2026-02-24', action: '任务创建' },
-                { time: '2026-02-24', action: 'backdev 审查完成' }
-            ]
-        },
-        {
-            id: '4',
-            name: 'MiddlegroundFoundationCenter 数据库备注',
-            status: 'done',
-            branch: 'feature/2026/02/24/添加数据库备注',
-            project: 'UFX.SCM.Cloud.MiddlegroundFoundationCenter',
-            description: 'OpenCode 处理失败，无修改',
-            createdAt: '2026-02-24',
-            reports: [
-                { agent: 'main', time: '2026-02-24', content: 'Boss 分配任务：给 MiddlegroundFoundationCenter 项目添加数据库备注。' },
-                { agent: 'backdev', time: '2026-02-24', content: 'OpenCode 执行超时，没有生成修改。任务状态：失败。' }
-            ],
-            timeline: [
-                { time: '2026-02-24', action: '任务创建' },
-                { time: '2026-02-24', action: 'OpenCode 超时失败' }
-            ]
-        },
-        {
-            id: '5',
-            name: '开发任务管理系统',
-            status: 'done',
-            branch: 'feature/2026/02/24/开发任务管理系统',
-            project: 'task-management',
-            description: '看板视图、任务详情、时间线，支持记录所有 Agent 汇报内容',
-            createdAt: '2026-02-24',
-            reports: [
-                { agent: 'main', time: '2026-02-24', content: 'Boss 分配任务：开发任务管理系统，记录所有开发任务，有看板视图，点击可查看详情。' },
-                { agent: 'productmanager', time: '2026-02-24', content: '需求文档已完成！包含：7种状态流转、看板视图+拖拽、任务详情页+时间线、预估开发周期：8天。输出：task-management-requirements.md' },
-                { agent: 'architect', time: '2026-02-24', content: '架构设计已完成！方案：前后端分离SPA，技术栈 React + TypeScript + Node.js + MySQL，核心模块5个，周期8天。输出：task-management-architecture.md' },
-                { agent: 'backdev', time: '2026-02-24', content: '手动开发完成！创建了 index.html，包含看板视图、任务详情弹窗、时间线记录、数据存储在 localStorage。' }
-            ],
-            timeline: [
-                { time: '2026-02-24', action: '任务创建' },
-                { time: '2026-02-24', action: 'productmanager 需求分析' },
-                { time: '2026-02-24', action: 'architect 架构设计' },
-                { time: '2026-02-24', action: 'backdev 开发完成' }
-            ]
-        },
-        {
-            id: '6',
-            name: '用户禁用自动转办审批任务',
-            status: 'done',
-            branch: 'feature/2026/02/25/auto-transfer-approval',
-            project: 'UFX.SCM.Cloud.WorkflowCenter',
-            description: '当用户被禁用时，自动将其审批任务转办给上级；无上级则转办给租户主账号',
-            createdAt: '2026-02-25',
-            reports: [
-                { agent: 'main', time: '2026-02-25', content: 'Boss 分配任务：给 WorkflowCenter 项目增加用户禁用时自动转办审批任务功能。' },
-                { agent: 'productmanager', time: '2026-02-25', content: '需求文档已完成！' },
-                { agent: 'architect', time: '2026-02-25', content: '架构设计已完成！' },
-                { agent: 'backdev', time: '2026-02-25', content: '功能开发完成！新增 UserDisabledEvent、UserDisabledEventHandler、UserDisabledTaskTransferService、UserDisabledTaskTransfer 实体。修复审查问题：拼写错误Respositiy、添加幂等性检查、使用IClock。' },
-                { agent: 'reviewer', time: '2026-02-25', content: '代码审查完成，修复问题后通过。' },
-                { agent: 'tester', time: '2026-02-25', content: '测试项目配置已修复，添加测试用例。' }
-            ],
-            timeline: [
-                { time: '2026-02-25', action: '任务创建' },
-                { time: '2026-02-25', action: 'productmanager 需求分析' },
-                { time: '2026-02-25', action: 'architect 架构设计' },
-                { time: '2026-02-25', action: 'backdev 开发完成' },
-                { time: '2026-02-25', action: 'reviewer 代码审查通过' },
-                { time: '2026-02-25', action: 'tester 测试完成' }
-            ]
+// GitHub Gist API 请求
+function gistRequest(method, url, data = null) {
+    return new Promise((resolve, reject) => {
+        const urlObj = new URL(url);
+        const options = {
+            hostname: urlObj.hostname,
+            port: 443,
+            path: urlObj.pathname + urlObj.search,
+            method: method,
+            headers: {
+                'Authorization': `token ${GITHUB_TOKEN}`,
+                'Accept': 'application/vnd.github.v3+json',
+                'User-Agent': 'TaskManagement/1.0'
+            }
+        };
+
+        const req = https.request(options, (res) => {
+            let body = '';
+            res.on('data', chunk => body += chunk);
+            res.on('end', () => {
+                try {
+                    // 尝试解析 JSON
+                    resolve(JSON.parse(body));
+                } catch (e) {
+                    // 如果不是 JSON，返回原始内容
+                    resolve(body);
+                }
+            });
+        });
+
+        req.on('error', reject);
+
+        if (data) {
+            req.write(JSON.stringify(data));
         }
-    ];
-    fs.writeFileSync(DATA_FILE, JSON.stringify(initialData, null, 2), 'utf8');
+        req.end();
+    });
 }
 
-const server = http.createServer((req, res) => {
+// 读取 Gist 数据
+async function loadFromGist() {
+    try {
+        // 尝试获取现有 Gist
+        const response = await gistRequest('GET', 'https://api.github.com/gists');
+        
+        // 检查是否是数组
+        let gists = [];
+        if (Array.isArray(response)) {
+            gists = response;
+        } else if (response && typeof response === 'object') {
+            gists = [response];
+        }
+        
+        // 查找我们的 Gist
+        const gist = gists.find(g => g.description === 'task-management-data');
+        
+        if (gist) {
+            console.log('✅ 从 Gist 加载数据:', gist.id);
+            const content = gist.files['tasks.json'].content;
+            return JSON.parse(content);
+        } else {
+            console.log('📝 没有找到现有 Gist，将创建新的');
+            return null;
+        }
+    } catch (e) {
+        console.error('❌ 加载 Gist 失败:', e.message);
+        return null;
+    }
+}
+
+// 保存到 Gist
+let currentGistId = null;
+
+async function saveToGist(tasks) {
+    try {
+        const content = JSON.stringify(tasks, null, 2);
+        const gistData = {
+            description: 'task-management-data',
+            public: false,
+            files: {
+                'tasks.json': {
+                    content: content
+                }
+            }
+        };
+
+        let result;
+        if (currentGistId) {
+            // 更新现有 Gist
+            result = await gistRequest('PATCH', `https://api.github.com/gists/${currentGistId}`, gistData);
+        } else {
+            // 创建新 Gist
+            result = await gistRequest('POST', 'https://api.github.com/gists', gistData);
+            currentGistId = result.id;
+            // 保存 Gist ID 到本地文件
+            fs.writeFileSync(path.join(dataDir, 'gist-id.txt'), result.id);
+            console.log('✅ 创建新 Gist:', result.id);
+        }
+        
+        console.log('✅ 已保存到 Gist');
+        return true;
+    } catch (e) {
+        console.error('❌ 保存 Gist 失败:', e.message);
+        return false;
+    }
+}
+
+// 初始化：尝试从 Gist 加载数据
+async function initData() {
+    // 检查本地是否有 Gist ID
+    const gistIdFile = path.join(dataDir, 'gist-id.txt');
+    if (fs.existsSync(gistIdFile)) {
+        currentGistId = fs.readFileSync(gistIdFile, 'utf8').trim();
+    }
+
+    // 尝试从 Gist 加载
+    const gistData = await loadFromGist();
+    
+    if (gistData) {
+        // 从 Gist 加载成功，写入本地备份
+        fs.writeFileSync(DATA_FILE, JSON.stringify(gistData, null, 2), 'utf8');
+        console.log('✅ 数据已从 Gist 恢复');
+    } else if (fs.existsSync(DATA_FILE)) {
+        // 没有 Gist，使用本地数据并创建 Gist
+        console.log('📝 现有本地数据，创建 Gist...');
+        const localData = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+        await saveToGist(localData);
+    } else {
+        // 没有任何数据，初始化
+        const initialData = [
+            {
+                id: '1',
+                name: 'PermissionCenter 数据库备注',
+                status: 'done',
+                branch: 'feature/2026/02/24/添加数据库备注',
+                project: 'UFX.SCM.Cloud.PermissionCenter',
+                description: '给没有备注的字段添加数据库备注',
+                createdAt: '2026-02-24',
+                reports: [
+                    { agent: 'main', time: '2026-02-24', content: 'Boss 分配任务：给 PermissionCenter 项目添加数据库备注。' },
+                    { agent: 'backdev', time: '2026-02-24', content: '完成！给 PermissionCenter 项目添加了数据库备注。共修改了 17 个文件，添加了 34 处 HasComment。编译通过，0 错误，421 警告。分支：feature/2026/02/24/添加数据库备注' }
+                ],
+                timeline: [
+                    { time: '2026-02-24', action: '任务创建' },
+                    { time: '2026-02-24', action: 'backdev 开发完成' },
+                    { time: '2026-02-24', action: '编译通过 0错误' }
+                ]
+            }
+        ];
+        fs.writeFileSync(DATA_FILE, JSON.stringify(initialData, null, 2), 'utf8');
+        await saveToGist(initialData);
+    }
+}
+
+const server = http.createServer(async (req, res) => {
     // CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -149,59 +185,58 @@ const server = http.createServer((req, res) => {
     // API: 获取任务
     if (req.method === 'GET' && req.url === '/api/tasks') {
         try {
+            // 优先从 Gist 获取最新数据
+            const gistData = await loadFromGist();
+            if (gistData) {
+                // 更新本地缓存
+                fs.writeFileSync(DATA_FILE, JSON.stringify(gistData, null, 2), 'utf8');
+                res.writeHead(200, { 
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Access-Control-Allow-Origin': '*'
+                });
+                res.end(JSON.stringify(gistData));
+            } else {
+                // 降级到本地文件
+                const rawData = fs.readFileSync(DATA_FILE);
+                const data = JSON.parse(rawData.toString('utf8'));
+                res.writeHead(200, { 
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Access-Control-Allow-Origin': '*'
+                });
+                res.end(JSON.stringify(data));
+            }
+        } catch (e) {
+            // 降级到本地文件
             const rawData = fs.readFileSync(DATA_FILE);
             const data = JSON.parse(rawData.toString('utf8'));
-            const jsonStr = JSON.stringify(data);
             res.writeHead(200, { 
                 'Content-Type': 'application/json; charset=utf-8',
                 'Access-Control-Allow-Origin': '*'
             });
-            res.end(jsonStr);
-        } catch (e) {
-            res.writeHead(200, { 
-                'Content-Type': 'application/json; charset=utf-8',
-                'Access-Control-Allow-Origin': '*'
-            });
-            res.end('[]');
+            res.end(JSON.stringify(data));
         }
         return;
-    }
-
-    // GitHub 自动同步
-    const { exec } = require('child_process');
-    
-    function syncToGitHub(message = 'Update') {
-        console.log('🔄 正在同步到 GitHub...');
-        exec('git add . && git commit -m "' + message + '" && git push origin master gh-pages', 
-            { cwd: __dirname },
-            (error, stdout, stderr) => {
-                if (error) {
-                    console.error('❌ GitHub 同步失败:', stderr);
-                } else {
-                    console.log('✅ 已同步到 GitHub!');
-                }
-            });
-    }
-
-    // 保存任务后同步
-    function saveTasksAndSync(tasks, res) {
-        fs.writeFileSync(DATA_FILE, JSON.stringify(tasks, null, 2), 'utf8');
-        res.writeHead(200, { 
-            'Content-Type': 'application/json; charset=utf-8',
-            'Access-Control-Allow-Origin': '*'
-        });
-        res.end(JSON.stringify({ success: true }));
-        syncToGitHub('Update tasks');
     }
 
     // API: 保存任务
     if (req.method === 'POST' && req.url === '/api/tasks') {
         let body = '';
         req.on('data', chunk => body += chunk);
-        req.on('end', () => {
+        req.on('end', async () => {
             try {
                 const tasks = JSON.parse(body);
-                saveTasksAndSync(tasks, res);
+                
+                // 保存到本地
+                fs.writeFileSync(DATA_FILE, JSON.stringify(tasks, null, 2), 'utf8');
+                
+                // 保存到 Gist（异步，不阻塞响应）
+                saveToGist(tasks);
+                
+                res.writeHead(200, { 
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Access-Control-Allow-Origin': '*'
+                });
+                res.end(JSON.stringify({ success: true }));
             } catch (e) {
                 res.writeHead(500, { 
                     'Content-Type': 'application/json; charset=utf-8',
@@ -236,7 +271,10 @@ const server = http.createServer((req, res) => {
     });
 });
 
-server.listen(PORT, () => {
-    console.log(`🚀 开发任务管理系统已启动: http://localhost:${PORT}`);
-    console.log(`📁 数据文件: ${DATA_FILE}`);
+// 启动服务器
+initData().then(() => {
+    server.listen(PORT, () => {
+        console.log(`🚀 开发任务管理系统已启动: http://localhost:${PORT}`);
+        console.log(`📁 数据持久化: GitHub Gist + 本地备份`);
+    });
 });
