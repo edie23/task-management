@@ -29,6 +29,12 @@
             min-height: 100vh;
         }
         
+        /* 美化滚动条 */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+        
         /* 布局 */
         .app {
             display: flex;
@@ -38,15 +44,16 @@
         
         /* 左侧栏 - Agent */
         .sidebar {
-            width: 280px;
+            width: 260px;
             background: var(--bg-card);
             border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
+            flex-shrink: 0;
         }
         
         .sidebar-header {
-            padding: 20px;
+            padding: 16px 20px;
             border-bottom: 1px solid var(--border);
         }
         
@@ -57,31 +64,26 @@
         }
         
         .logo-icon {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-            border-radius: 8px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 14px;
         }
         
         .logo-text {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
-        }
-        
-        .logo-sub {
-            font-size: 11px;
-            color: var(--text-secondary);
         }
         
         /* Agent 列表 */
         .agents-section {
             flex: 1;
             overflow-y: auto;
-            padding: 16px;
+            padding: 12px;
         }
         
         .section-title {
@@ -90,18 +92,18 @@
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             padding: 0 8px;
         }
         
         .agent-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            transition: all 0.2s;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            transition: all 0.15s;
             cursor: pointer;
         }
         
@@ -111,81 +113,98 @@
         
         .agent-item.active {
             background: rgba(59, 130, 246, 0.15);
-            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        
+        .agent-item .task-count {
+            margin-left: auto;
+            font-size: 11px;
+            background: var(--bg-hover);
+            padding: 2px 6px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+        }
+        
+        .agent-item.active .task-count {
+            background: var(--accent-blue);
+            color: white;
         }
         
         .agent-avatar {
-            width: 36px;
-            height: 36px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 12px;
+            flex-shrink: 0;
         }
         
         .agent-info {
             flex: 1;
+            min-width: 0;
         }
         
         .agent-name {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
-            margin-bottom: 2px;
         }
         
         .agent-role {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-secondary);
         }
         
         .agent-status {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
+            flex-shrink: 0;
         }
         
         .agent-status.idle { background: var(--text-secondary); }
-        .agent-status.working { background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
+        .agent-status.working { background: var(--accent-green); box-shadow: 0 0 6px var(--accent-green); }
         
         /* 主内容区 */
         .main {
             flex: 1;
             display: flex;
             flex-direction: column;
+            min-width: 0;
             overflow: hidden;
         }
         
         /* 顶部 Header */
         .header {
-            height: 60px;
+            height: 56px;
             background: var(--bg-card);
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 24px;
+            flex-shrink: 0;
         }
         
         .header-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
         }
         
         .header-actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
         
         .btn {
-            padding: 8px 16px;
-            border-radius: 8px;
+            padding: 7px 14px;
+            border-radius: 6px;
             border: none;
             cursor: pointer;
             font-size: 13px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.15s;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -212,9 +231,11 @@
         /* 统计 */
         .stats-bar {
             display: flex;
-            gap: 24px;
-            padding: 16px 24px;
+            gap: 20px;
+            padding: 14px 24px;
             border-bottom: 1px solid var(--border);
+            background: var(--bg-card);
+            flex-shrink: 0;
         }
         
         .stat-item {
@@ -224,12 +245,12 @@
         }
         
         .stat-num {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
         }
         
         .stat-label {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-secondary);
         }
         
@@ -242,39 +263,41 @@
         .board {
             flex: 1;
             overflow-x: auto;
-            padding: 20px;
+            padding: 16px;
+            background: var(--bg-dark);
         }
         
         .board-scroll {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             height: 100%;
             min-width: max-content;
         }
         
         .board-column {
-            width: 280px;
-            min-width: 280px;
+            width: 260px;
+            min-width: 260px;
             background: var(--bg-card);
-            border-radius: 12px;
+            border-radius: 10px;
             display: flex;
             flex-direction: column;
             max-height: 100%;
         }
         
         .column-header {
-            padding: 16px;
+            padding: 12px 14px;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-shrink: 0;
         }
         
         .column-title {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 14px;
+            gap: 6px;
+            font-size: 13px;
             font-weight: 600;
         }
         
@@ -282,37 +305,40 @@
             background: var(--bg-hover);
             padding: 2px 8px;
             border-radius: 10px;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-secondary);
         }
         
         .column-body {
             flex: 1;
             overflow-y: auto;
-            padding: 12px;
+            padding: 10px;
         }
         
         /* 任务卡片 */
         .task-card {
             background: var(--bg-dark);
-            border-radius: 10px;
-            padding: 14px;
-            margin-bottom: 10px;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s;
             border: 1px solid transparent;
         }
         
         .task-card:hover {
             border-color: var(--accent-blue);
-            transform: translateY(-1px);
         }
         
         .task-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         
         .task-meta {
@@ -323,39 +349,27 @@
         
         .task-project {
             font-size: 11px;
-            padding: 3px 8px;
+            padding: 2px 6px;
             background: var(--bg-hover);
-            border-radius: 6px;
+            border-radius: 4px;
             color: var(--text-secondary);
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         
-        .task-status {
+        .task-agent {
             font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 6px;
-        }
-        
-        .task-status.done {
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--accent-green);
-        }
-        
-        .task-status.doing {
-            background: rgba(245, 158, 11, 0.15);
-            color: var(--accent-yellow);
-        }
-        
-        .task-status.pending {
-            background: rgba(148, 163, 184, 0.15);
-            color: var(--text-secondary);
+            color: var(--accent-blue);
         }
         
         /* 空状态 */
         .empty-column {
             text-align: center;
-            padding: 40px 20px;
+            padding: 30px 16px;
             color: var(--text-secondary);
-            font-size: 13px;
+            font-size: 12px;
         }
         
         /* 弹窗 */
@@ -366,7 +380,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.75);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -378,9 +392,9 @@
         
         .modal-content {
             background: var(--bg-card);
-            border-radius: 16px;
+            border-radius: 12px;
             width: 90%;
-            max-width: 700px;
+            max-width: 600px;
             max-height: 80vh;
             overflow-y: auto;
         }
@@ -389,106 +403,140 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 24px;
+            padding: 16px 20px;
             border-bottom: 1px solid var(--border);
         }
         
         .modal-header h2 {
-            font-size: 18px;
+            font-size: 16px;
         }
         
         .modal-close {
             background: none;
             border: none;
             color: var(--text-secondary);
-            font-size: 24px;
+            font-size: 22px;
             cursor: pointer;
+            line-height: 1;
         }
         
         .modal-body {
-            padding: 24px;
+            padding: 20px;
         }
         
         /* 详情 */
         .detail-row {
             display: flex;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         
         .detail-label {
-            width: 80px;
-            font-size: 13px;
+            width: 60px;
+            font-size: 12px;
             color: var(--text-secondary);
+            flex-shrink: 0;
         }
         
         .detail-value {
-            flex: 1;
-            font-size: 14px;
+            font-size: 13px;
+            word-break: break-all;
         }
         
         /* 时间线 */
         .timeline {
-            margin-top: 24px;
-            padding-top: 24px;
+            margin-top: 20px;
+            padding-top: 16px;
             border-top: 1px solid var(--border);
         }
         
         .timeline-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         
         .timeline-item {
             display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
+            gap: 10px;
+            margin-bottom: 12px;
         }
         
         .timeline-dot {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: var(--accent-blue);
-            margin-top: 6px;
+            margin-top: 5px;
             flex-shrink: 0;
         }
         
         .timeline-content {
             flex: 1;
-        }
-        
+            min-width:         
         .timeline-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 4px;
+            margin0;
+        }
+-bottom: 2px;
         }
         
         .timeline-agent {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: var(--accent-blue);
         }
         
         .timeline-time {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-secondary);
         }
         
         .timeline-text {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-secondary);
             line-height: 1.5;
         }
         
-        /* 列颜色标识 */
-        .board-column[data-mode="新功能"] .column-title::before { content: ''; width: 4px; height: 16px; background: var(--accent-blue); border-radius: 2px; }
-        .board-column[data-mode="Bug修复"] .column-title::before { content: ''; width: 4px; height: 16px; background: var(--accent-red); border-radius: 2px; }
-        .board-column[data-mode="紧急热修"] .column-title::before { content: ''; width: 4px; height: 16px; background: #f97316; border-radius: 2px; }
-        .board-column[data-mode="重构优化"] .column-title::before { content: ''; width: 4px; height: 16px; background: var(--accent-purple); border-radius: 2px; }
-        .board-column[data-mode="数据迁移"] .column-title::before { content: ''; width: 4px; height: 16px; background: var(--accent-cyan); border-radius: 2px; }
-        .board-column[data-mode="需求调研"] .column-title::before { content: ''; width: 4px; height: 16px; background: var(--accent-yellow); border-radius: 2px; }
-        .board-column[data-mode="其他"] .title:before { content: ''; width: 4px; height: 16px; background: var(--text-secondary); border-radius: 2px; }
+        /* 新建任务表单 */
+        .form-group {
+            margin-bottom: 14px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-family: inherit;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+        
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 16px;
+        }
     </style>
 </head>
 <body>
@@ -498,10 +546,7 @@
             <div class="sidebar-header">
                 <div class="logo">
                     <div class="logo-icon">🤖</div>
-                    <div>
-                        <div class="logo-text">OpenClaw</div>
-                        <div class="logo-sub">任务管理系统</div>
-                    </div>
+                    <span class="logo-text">OpenClaw</span>
                 </div>
             </div>
             
@@ -517,10 +562,10 @@
         <main class="main">
             <!-- 顶部 Header -->
             <header class="header">
-                <div class="header-title">📋 任务看板</div>
+                <div class="header-title" id="header-title">📋 全部任务</div>
                 <div class="header-actions">
                     <button class="btn btn-secondary" onclick="refreshData()">🔄 刷新</button>
-                    <button class="btn btn-primary">+ 新建任务</button>
+                    <button class="btn btn-primary" onclick="openNewTaskModal()">+ 新建任务</button>
                 </div>
             </header>
             
@@ -564,9 +609,49 @@
             </div>
         </div>
     </div>
+    
+    <!-- 新建任务弹窗 -->
+    <div class="modal" id="new-task-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>➕ 新建任务</h2>
+                <button class="modal-close" onclick="closeNewTaskModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">任务名称 *</label>
+                    <input type="text" class="form-input" id="new-task-name" placeholder="请输入任务名称">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">开发模式 *</label>
+                    <select class="form-select" id="new-task-mode">
+                        <option value="新功能">🚀 新功能</option>
+                        <option value="Bug修复">🐛 Bug修复</option>
+                        <option value="紧急热修">🔥 紧急热修</option>
+                        <option value="重构优化">♻️ 重构优化</option>
+                        <option value="数据迁移">🗄️ 数据迁移</option>
+                        <option value="需求调研">🔬 需求调研</option>
+                        <option value="其他">📌 其他</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">项目</label>
+                    <input type="text" class="form-input" id="new-task-project" placeholder="请输入项目名称">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">描述</label>
+                    <textarea class="form-textarea" id="new-task-desc" placeholder="请输入任务描述"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeNewTaskModal()">取消</button>
+                    <button class="btn btn-primary" onclick="createTask()">创建</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // Gist 配置
+        // Gist 配置 - Token 从环境变量获取
         const GIST_ID = '96e9f660411102536b60b781b392f01d';
         
         // Agent 定义
@@ -592,14 +677,14 @@
         ];
         
         let tasks = [];
+        let filterAgent = null; // 当前过滤的 Agent
         
-        // 加载任务
+        // 加载任务 - 使用 raw URL 避免跨域
         function loadTasks() {
-            fetch(`https://api.github.com/gists/${GIST_ID}`)
+            fetch(`https://gist.githubusercontent.com/edie23/${GIST_ID}/raw`)
                 .then(res => res.json())
-                .then(gist => {
-                    const content = gist.files['tasks.json'].content;
-                    tasks = JSON.parse(content);
+                .then(data => {
+                    tasks = data;
                     renderAll();
                 })
                 .catch(err => {
@@ -616,10 +701,15 @@
         
         // 渲染统计
         function renderStats() {
-            const total = tasks.length;
-            const done = tasks.filter(t => t.status === 'done').length;
-            const doing = tasks.filter(t => t.status && t.status !== 'done' && t.status !== 'pending').length;
-            const pending = tasks.filter(t => !t.status || t.status === 'pending').length;
+            let filtered = tasks;
+            if (filterAgent) {
+                filtered = tasks.filter(t => t.reports && t.reports.some(r => r.agent === filterAgent));
+            }
+            
+            const total = filtered.length;
+            const done = filtered.filter(t => t.status === 'done').length;
+            const doing = filtered.filter(t => t.status && t.status !== 'done' && t.status !== 'pending').length;
+            const pending = filtered.filter(t => !t.status || t.status === 'pending').length;
             
             document.getElementById('stat-total').textContent = total;
             document.getElementById('stat-done').textContent = done;
@@ -629,22 +719,26 @@
         
         // 渲染 Agent
         function renderAgents() {
-            // 分析任务确定 Agent 状态
+            const agentTaskCount = {};
             const agentWorking = {};
             
             tasks.forEach(task => {
                 if (task.reports) {
                     const lastReport = task.reports[task.reports.length - 1];
-                    if (lastReport && task.status !== 'done') {
-                        agentWorking[lastReport.agent] = true;
+                    if (lastReport) {
+                        agentTaskCount[lastReport.agent] = (agentTaskCount[lastReport.agent] || 0) + 1;
+                        if (task.status !== 'done') {
+                            agentWorking[lastReport.agent] = true;
+                        }
                     }
                 }
             });
             
             const html = AGENTS.map(agent => {
                 const isWorking = agentWorking[agent.id];
+                const count = agentTaskCount[agent.id] || 0;
                 return `
-                    <div class="agent-item ${isWorking ? 'active' : ''}">
+                    <div class="agent-item ${filterAgent === agent.id ? 'active' : ''}" onclick="filterByAgent('${agent.id}')">
                         <div class="agent-avatar" style="background: ${agent.color}20; color: ${agent.color}">
                             ${agent.name.charAt(0)}
                         </div>
@@ -652,6 +746,7 @@
                             <div class="agent-name">${agent.name}</div>
                             <div class="agent-role">${agent.role}</div>
                         </div>
+                        <span class="task-count">${count}</span>
                         <div class="agent-status ${isWorking ? 'working' : 'idle'}"></div>
                     </div>
                 `;
@@ -660,24 +755,40 @@
             document.getElementById('agents-list').innerHTML = html;
         }
         
+        // 按 Agent 过滤
+        function filterByAgent(agentId) {
+            if (filterAgent === agentId) {
+                filterAgent = null; // 取消过滤
+                document.getElementById('header-title').textContent = '📋 全部任务';
+            } else {
+                filterAgent = agentId;
+                const agent = AGENTS.find(a => a.id === agentId);
+                document.getElementById('header-title').textContent = `📋 ${agent.name} 的任务`;
+            }
+            renderAll();
+        }
+        
         // 渲染看板
         function renderBoard() {
+            let filtered = tasks;
+            if (filterAgent) {
+                filtered = tasks.filter(t => t.reports && t.reports.some(r => r.agent === filterAgent));
+            }
+            
             const html = COLUMNS.map(col => {
-                const colTasks = tasks.filter(t => {
+                const colTasks = filtered.filter(t => {
                     const mode = (t.mode || '其他');
                     return mode === col.mode;
                 });
                 
                 const cards = colTasks.map(task => {
-                    const statusClass = task.status === 'done' ? 'done' : (task.status === 'pending' || !task.status ? 'pending' : 'doing');
-                    const statusText = task.status === 'done' ? '已完成' : (task.status === 'pending' || !task.status ? '待处理' : '进行中');
-                    
+                    const lastReport = task.reports && task.reports.length > 0 ? task.reports[task.reports.length - 1] : null;
                     return `
                         <div class="task-card" onclick="showTask('${task.id}')">
                             <div class="task-title">${task.name}</div>
                             <div class="task-meta">
                                 <span class="task-project">${task.project || '-'}</span>
-                                <span class="task-status ${statusClass}">${statusText}</span>
+                                ${lastReport ? `<span class="task-agent">@${lastReport.agent}</span>` : ''}
                             </div>
                         </div>
                     `;
@@ -686,7 +797,7 @@
                 const emptyHtml = colTasks.length === 0 ? '<div class="empty-column">暂无任务</div>' : '';
                 
                 return `
-                    <div class="board-column" data-mode="${col.mode}">
+                    <div class="board-column">
                         <div class="column-header">
                             <span class="column-title">${col.title}</span>
                             <span class="column-count">${colTasks.length}</span>
@@ -744,7 +855,7 @@
                     <span class="detail-label">创建</span>
                     <span class="detail-value">${task.createdAt || '-'}</span>
                 </div>
-                ${timeline ? `<div class="timeline"><div class="timeline-title">📝 执行记录</div>${timeline}</div>` : '<div style="color: var(--text-secondary); margin-top: 20px;">暂无记录</div>'}
+                ${timeline ? `<div class="timeline"><div class="timeline-title">📝 执行记录</div>${timeline}</div>` : '<div class="empty-column">暂无记录</div>'}
             `;
             
             document.getElementById('task-modal').classList.add('show');
@@ -755,14 +866,74 @@
             document.getElementById('task-modal').classList.remove('show');
         }
         
+        // 新建任务
+        function openNewTaskModal() {
+            document.getElementById('new-task-modal').classList.add('show');
+        }
+        
+        function closeNewTaskModal() {
+            document.getElementById('new-task-modal').classList.remove('show');
+            // 清空表单
+            document.getElementById('new-task-name').value = '';
+            document.getElementById('new-task-mode').value = '新功能';
+            document.getElementById('new-task-project').value = '';
+            document.getElementById('new-task-desc').value = '';
+        }
+        
+        function createTask() {
+            const name = document.getElementById('new-task-name').value.trim();
+            const mode = document.getElementById('new-task-mode').value;
+            const project = document.getElementById('new-task-project').value.trim();
+            const description = document.getElementById('new-task-desc').value.trim();
+            
+            if (!name) {
+                alert('请输入任务名称');
+                return;
+            }
+            
+            const newTask = {
+                id: Date.now().toString(),
+                name: name,
+                mode: mode,
+                status: 'pending',
+                project: project,
+                description: description,
+                createdAt: new Date().toISOString().split('T')[0],
+                reports: [],
+                timeline: []
+            };
+            
+            tasks.push(newTask);
+            
+            // 保存到 Gist
+            saveTasks();
+            
+            closeNewTaskModal();
+            renderAll();
+        }
+        
+        // 保存任务 - GitHub Pages 版本不支持保存，请本地运行
+        function saveTasks() {
+            // 本地版本需要配置 Token
+            console.log('保存功能仅本地可用');
+        }
+            });
+        }
+        
         // 刷新数据
         function refreshData() {
+            filterAgent = null;
+            document.getElementById('header-title').textContent = '📋 全部任务';
             loadTasks();
         }
         
         // 关闭弹窗事件
         document.getElementById('task-modal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
+        });
+        
+        document.getElementById('new-task-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeNewTaskModal();
         });
         
         // 初始化
